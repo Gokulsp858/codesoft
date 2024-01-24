@@ -1,0 +1,45 @@
+#include <stdio.h>
+#include <string.h>
+
+typedef struct {
+    char* keyword;
+    char* response;
+} Rule;
+
+Rule rules[] = {
+    {"hello", "Hi there! How can I help you?"},
+    {"how are you", "I'm just a bot, but I'm doing well. Thanks for asking!"},
+    {"bye", "Goodbye! Have a great day."},
+    {"age", "I'm a virtual assistant and don't have an age."},
+    {"favorite color", "I don't have preferences, but I can help you with information!"},
+    {"default", "I'm not sure how to respond to that. Can you ask something else?"}
+};
+
+char* get_response(char* user_input) {
+    for (int i = 0; i < sizeof(rules) / sizeof(rules[0]); ++i) {
+        if (strstr(user_input, rules[i].keyword)) {
+            return rules[i].response;
+        }
+    }
+    return rules[4].response;
+}
+
+int main() {
+    printf("Bot: Hello! I'm a Rule-Based Chatbot. Type 'bye' to exit.\n");
+
+    while (1) {
+        char user_query[100];
+        printf("You: ");
+        fgets(user_query, sizeof(user_query), stdin);
+
+        if (strstr(user_query, "bye")) {
+            printf("Bot: Goodbye!\n");
+            break;
+        }
+
+        char* response = get_response(user_query);
+        printf("Bot: %s\n", response);
+    }
+
+    return 0;
+}
